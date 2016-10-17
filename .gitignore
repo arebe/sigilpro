@@ -9,3 +9,6 @@
 .Trashes
 
 # assets
+
+### Linux ###
+.fuse*

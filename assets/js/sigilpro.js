@@ -2,7 +2,7 @@
 * Draws to canvas based on device motion
 */
 var r = 20
-var g = 50
+var g = [0,1]
 var b = 255
 var a = 0.8
 
@@ -21,9 +21,10 @@ function setup(){
 }
 
 function draw(){
-	g = wrapColor(g)
-	fill(r, g, b)
-	stroke(r, g, b, a)
+	wrapColor(g)
+    console.log(g)
+	fill(r, g[0], b)
+	stroke(r, g[0], b, a)
 
 	if(window.DeviceMotionEvent){
 		window.addEventListener("devicemotion", followMotion, false)
@@ -70,9 +71,21 @@ function convertRange( val, r1, r2 ) {
 
 /** wrap color around ***/
 function wrapColor(val){
-	val += 1
-	if (val > 255){
-		return 0
-	}
-	else { return val }
+    //colour array stores two ints, the currently being-drawn colour and most-recent drawn colour
+    //first we check to see if we're at the end of the colour wheel, if we are we 
+    //have to switch direction.  Otherwise, we check what direction we're going, move current into 
+    //last and increment or decrement current
+    if (val[0] === 0) {
+        val[1] = val[0]
+        val[0] = 1
+    } else if (val[0] === 255) {
+        val[1] = val[0]
+        val[0] = 250
+    } else if (val[0] > val[1]) {
+        val[1] = val[0]
+        val[0] = val[0]+1
+    } else {
+        val[1] = val[0]
+        val[0] = val[0]-1
+    }
 }
