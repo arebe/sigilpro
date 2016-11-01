@@ -11,7 +11,6 @@ var x, y
 var matchMedia = window.msMatchMedia || window.MozMatchMedia || window.WebkitMatchMedia || window.matchMedia
 
 function setup(){
-	//var main = document.getElementById("main")
 	var canvas = createCanvas(windowWidth, windowHeight)
 	canvas.parent(main)
 	fill("#55f")
@@ -21,10 +20,9 @@ function setup(){
 
     castButton = createButton('Cast');
     castButton.addClass('cssCastButton');
-    castButton = createButton('Discard');
-    castButton.addClass('cssDiscardButton');
-    //textColorButton.position(25, 25);
-    //textColorButton.mousePressed(changeColor);
+    discardButton = createButton('Discard');
+    discardButton.addClass('cssDiscardButton');
+    discardButton.mousePressed(discardDrawing);
 }
 
 function draw(){
@@ -63,11 +61,14 @@ function followMotion(e){
 		y = main.offsetHeight
 	}
 
-
 	ellipse(x, y, 5, 5)
 	
 }
-
+function discardDrawing() {
+    x = main.offsetWidth/2
+    y = main.offsetHeight/2
+    background(0,0,0);
+}
 
 /** convert a value from one range to another ***/
 function convertRange( val, r1, r2 ) { 
