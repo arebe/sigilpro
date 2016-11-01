@@ -11,18 +11,24 @@ var x, y
 var matchMedia = window.msMatchMedia || window.MozMatchMedia || window.WebkitMatchMedia || window.matchMedia
 
 function setup(){
-	var main = document.getElementById("main")
-	var canvas = createCanvas(main.offsetWidth, main.offsetHeight)
+	//var main = document.getElementById("main")
+	var canvas = createCanvas(windowWidth, windowHeight)
 	canvas.parent(main)
 	fill("#55f")
 	stroke("#55f")
 	x = main.offsetWidth/2
 	y = main.offsetHeight/2
+
+    castButton = createButton('Cast');
+    castButton.addClass('cssCastButton');
+    castButton = createButton('Discard');
+    castButton.addClass('cssDiscardButton');
+    //textColorButton.position(25, 25);
+    //textColorButton.mousePressed(changeColor);
 }
 
 function draw(){
 	wrapColor(g)
-    console.log(g)
 	fill(r, g[0], b)
 	stroke(r, g[0], b, a)
 
@@ -30,7 +36,6 @@ function draw(){
 		window.addEventListener("devicemotion", followMotion, false)
 	}else{
 		console.log("DeviceMotionEvent is not supported")
-		
 	}
 }
 
@@ -66,7 +71,7 @@ function followMotion(e){
 
 /** convert a value from one range to another ***/
 function convertRange( val, r1, r2 ) { 
-  return (val - r1[0])*(r2[1] - r2[0])/(r1[1] - r1[0]) + r2[0]
+    return (val - r1[0])*(r2[1] - r2[0])/(r1[1] - r1[0]) + r2[0]
 }
 
 /** wrap color around ***/
