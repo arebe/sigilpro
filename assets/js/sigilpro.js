@@ -10,6 +10,7 @@ var x, y;
 var oldX, oldY;
 var currentlyDrawing = false;
 var currentlyCasting = false;
+var isIosDevice = false;
 var theta = 0;
 var startCastTime = 0.0;
 
@@ -25,6 +26,8 @@ function setup(){
 	y = main.offsetHeight/2
     oldX = x;
     oldY = y;
+
+    iOSChecker();
 
     castButton = createButton('Cast');
     castButton.addClass('cssCastButton');
@@ -59,27 +62,36 @@ function draw(){
             currentlyCasting = false;
         }
     }
+    console.log(isIosDevice);
 }
 
 function followMotion(e){
     if (currentlyDrawing) {
-    	// var mx = main.offsetWidth/2
-    	// var my = main.offsetHeight/2
-
-    	// ellipse(mx, my, 5, 5)
         oldX = x
         oldY = y
+        console.log("followmotion called")
 
-    	x -= e.accelerationIncludingGravity.x
+        if (isIosDevice) {
+            x += e.accelerationIncludingGravity.x
+        } else {
+    	    x -= e.accelerationIncludingGravity.x
+        }
+
+        //x -= e.accelerationIncludingGravity.x
+
     	if (x < 0){
     		x = 0
     	}
     	else if(x > main.offsetWidth){
     		x = main.offsetWidth
     	}
-    	// x = constrain(x, [0, main.offsetWidth])
     	
-    	y += e.accelerationIncludingGravity.y
+        if (isIosDevice) {
+            y -= e.accelerationIncludingGravity.y
+        } else {
+    	    y += e.accelerationIncludingGravity.y
+        }
+
     	if (y < 0){
     		y = 0
     	}
@@ -87,10 +99,32 @@ function followMotion(e){
     		y = main.offsetHeight
     	}
 
-    	//ellipse(x, y, 5, 5)
         line(oldX, oldY, x, y);
     } 
 }
+
+function iOSChecker() {
+
+    var iDevices = [
+        'iPad Simulator',
+        'iPhone Simulator',
+        'iPod Simulator',
+        'iPad',
+        'iPhone',
+        'iPod'
+    ];
+
+    if (!!navigator.platform) {
+        console.log(navigator.platform)
+        while (iDevices.length) {
+            if (navigator.platform === iDevices.pop()) { 
+
+                isIosDevice = true; 
+            }
+        }
+    }
+}
+
 function discardDrawing() {
     x = main.offsetWidth/2
     y = main.offsetHeight/2
@@ -98,6 +132,7 @@ function discardDrawing() {
     stopButton.hide();
     startButton.show();
     currentlyDrawing = false;
+    currentlyCasting = false;
 }
 
 function triggerCastingAnimation() {
