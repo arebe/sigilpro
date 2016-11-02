@@ -62,22 +62,18 @@ function draw(){
             currentlyCasting = false;
         }
     }
-    console.log(isIosDevice);
 }
 
 function followMotion(e){
     if (currentlyDrawing) {
         oldX = x
         oldY = y
-        console.log("followmotion called")
 
         if (isIosDevice) {
             x += e.accelerationIncludingGravity.x
         } else {
     	    x -= e.accelerationIncludingGravity.x
         }
-
-        //x -= e.accelerationIncludingGravity.x
 
     	if (x < 0){
     		x = 0
@@ -103,12 +99,10 @@ function followMotion(e){
     } 
 }
 
+/** sets isIosDevice as true if using an iOS device ***/
 function iOSChecker() {
 
     var iDevices = [
-        'iPad Simulator',
-        'iPhone Simulator',
-        'iPod Simulator',
         'iPad',
         'iPhone',
         'iPod'
@@ -118,13 +112,13 @@ function iOSChecker() {
         console.log(navigator.platform)
         while (iDevices.length) {
             if (navigator.platform === iDevices.pop()) { 
-
                 isIosDevice = true; 
             }
         }
     }
 }
 
+/** resets pen and wipes canvas ***/
 function discardDrawing() {
     x = main.offsetWidth/2
     y = main.offsetHeight/2
@@ -135,6 +129,7 @@ function discardDrawing() {
     currentlyCasting = false;
 }
 
+/** resets sigil animation variables and stops pen movement ***/
 function triggerCastingAnimation() {
     startCastTime = millis();
     currentlyCasting = true;
@@ -142,6 +137,7 @@ function triggerCastingAnimation() {
     theta = 0.0;
 }
 
+/** animates flickery circles as your sigil fades into the void ***/
 function castSigil() {
     circleXsm = 50 * cos(theta) + (windowWidth/2);
     circleYsm = 50 * sin(theta) + (windowHeight/2);
@@ -149,19 +145,21 @@ function castSigil() {
     circleX = 100 * cos(theta) + (windowWidth/2);
     circleY = 100 * sin(theta) + (windowHeight/2);
     ellipse(circleX, circleY, 5, 5);
-    circleXlg = 200 * cos(theta) + (windowWidth/2);
-    circleYlg = 200 * sin(theta) + (windowHeight/2);
+    circleXlg = 150 * cos(theta) + (windowWidth/2);
+    circleYlg = 150 * sin(theta) + (windowHeight/2);
     ellipse(circleXlg, circleYlg, 5, 5);
     theta += 1;
     background('rgba(0%,0%,0%,0.01)')
 }
 
+/** starts pen motion and shows the stop button ***/
 function startDrawing() {
     currentlyDrawing = true;
     startButton.hide();
     stopButton.show();
 }
 
+/** stops pen motion and shows the start button ***/
 function stopDrawing() {
     currentlyDrawing = false;
     stopButton.hide();
